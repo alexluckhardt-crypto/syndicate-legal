@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syndicate — Multi-Platform Content Publisher for Creators</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d1a;
+      --panel:    #11112a;
+      --card:     #181830;
+      --border:   #2d2d50;
+      --accent:   #7c3aed;
+      --accent-h: #6d28d9;
+      --txt:      #e2e8f0;
+      --txt-dim:  #94a3b8;
+      --txt-muted:#64748b;
+      --success:  #059669;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,13,26,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--txt);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: var(--txt-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--txt); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 100px 40px 80px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.35);
+      color: #a78bfa;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 22px;
+      color: var(--txt);
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--txt-dim);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-h); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--txt-dim);
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--txt-muted); color: var(--txt); }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 72px 40px;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--txt);
+    }
+    .section-intro {
+      font-size: 1rem;
+      color: var(--txt-dim);
+      max-width: 620px;
+      margin-bottom: 48px;
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 40px;
+    }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+    }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(124,58,237,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--txt);
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--txt-dim);
+    }
+
+    /* ── PLATFORMS ── */
+    .platform-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .platform-pill {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--txt-dim);
+    }
+
+    /* ── PERMISSIONS ── */
+    .permissions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .perm-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 20px;
+      align-items: start;
+    }
+    .perm-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .perm-name {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a78bfa;
+      margin-bottom: 4px;
+    }
+    .perm-desc {
+      font-size: 0.9rem;
+      color: var(--txt-dim);
+    }
+    .perm-desc strong { color: var(--txt); }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 22px;
+      position: relative;
+    }
+    .step-num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: rgba(124,58,237,0.25);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .step h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--txt);
+      margin-bottom: 8px;
+    }
+    .step p { font-size: 0.88rem; color: var(--txt-dim); }
+
+    /* ── DATA / PRIVACY CALLOUT ── */
+    .privacy-callout {
+      background: linear-gradient(135deg, rgba(5,150,105,0.12), rgba(5,150,105,0.06));
+      border: 1px solid rgba(5,150,105,0.3);
+      border-radius: 16px;
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 32px;
+      align-items: center;
+    }
+    .privacy-icon { font-size: 2.4rem; }
+    .privacy-callout h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #6ee7b7;
+      margin-bottom: 8px;
+    }
+    .privacy-callout p { font-size: 0.95rem; color: var(--txt-dim); }
+    .privacy-callout a { color: #6ee7b7; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .footer-brand {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--txt-dim);
+    }
+    .footer-brand span { color: var(--accent); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      color: var(--txt-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--txt-dim); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 16px; }
+      section { padding: 56px 20px; }
+      .hero { padding: 72px 20px 60px; }
+      .privacy-callout { grid-template-columns: 1fr; gap: 16px; padding: 28px 24px; }
+      footer { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">SYNDICATE <span>◆</span></a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#permissions">Permissions</a>
+    <a href="#privacy">Privacy</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">Content Creator Tool</div>
+  <h1>Publish once.<br><em>Reach everywhere.</em></h1>
+  <p>Syndicate is a desktop application that helps independent content creators schedule, repurpose, and publish video content across Instagram, Facebook, TikTok, YouTube, Pinterest, and LTK — from a single interface.</p>
+  <div class="hero-actions">
+    <a href="#features" class="btn-primary">See Features</a>
+    <a href="#permissions" class="btn-ghost">Permissions Explained</a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">What Syndicate Does</div>
+  <h2>Everything a creator needs to cross-post</h2>
+  <p class="section-intro">Syndicate is built for individual creators and small teams who publish video content regularly and want to stop repeating the same steps on every platform.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Schedule & Queue Posts</h3>
+      <p>Add videos to a local queue with a scheduled date and time. Syndicate publishes them automatically in the background.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔁</div>
+      <h3>Multi-Platform Publishing</h3>
+      <p>Publish to Instagram, Facebook Pages, YouTube, Pinterest, TikTok, and LTK in one action — each with platform-appropriate captions.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✨</div>
+      <h3>AI Caption Generation</h3>
+      <p>Generate captions automatically from your video content using Claude AI, customized per platform.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>Automated Comment DMs</h3>
+      <p>When a follower comments a keyword (e.g. "link") on an Instagram post, Syndicate automatically sends them a DM with the relevant shopping link.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Analytics Dashboard</h3>
+      <p>Track views, likes, reach, and engagement across your published posts in a single dashboard.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>100% Local — No Cloud</h3>
+      <p>All credentials, tokens, and post data are stored only on your device. Nothing is sent to our servers.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <p style="color: var(--txt-muted); font-size: 0.85rem; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Supported Platforms</p>
+    <div class="platform-row">
+      <div class="platform-pill">Instagram</div>
+      <div class="platform-pill">Facebook</div>
+      <div class="platform-pill">TikTok</div>
+      <div class="platform-pill">YouTube</div>
+      <div class="platform-pill">Pinterest</div>
+      <div class="platform-pill">LTK</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-label">How It Works</div>
+  <h2>Simple workflow for creators</h2>
+  <p class="section-intro">Syndicate is a native macOS desktop app. You connect your accounts once, then manage all your publishing from one place.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Connect your accounts</h3>
+      <p>Authenticate once with Facebook/Instagram via OAuth. Your token is saved locally on your device.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Select a video</h3>
+      <p>Pick a local video file or import from TikTok by URL. Add a caption or generate one with AI.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Choose platforms & schedule</h3>
+      <p>Toggle which platforms to publish to, pick a date and time, and add it to your queue.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Syndicate publishes it</h3>
+      <p>At the scheduled time, the app publishes to every selected platform and updates the queue status.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PERMISSIONS -->
+<section id="permissions">
+  <div class="section-label">Meta Permissions</div>
+  <h2>Why we request each permission</h2>
+  <p class="section-intro">Syndicate requests the minimum Meta permissions needed to perform publishing and engagement actions on behalf of the authenticated user. We do not request permissions we don't use.</p>
+
+  <div class="permissions-list">
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">instagram_content_publish</div>
+        <div class="perm-desc"><strong>Required to publish video posts to Instagram.</strong> This is the core publishing permission. When a creator schedules a post in Syndicate, the app uses this permission to upload the video and caption to their Instagram Business account at the scheduled time.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">instagram_basic</div>
+        <div class="perm-desc"><strong>Required to read basic Instagram account info</strong> (account ID, username, media list). Syndicate uses this to identify the authenticated account and to list recent posts when checking for comments.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">instagram_manage_comments</div>
+        <div class="perm-desc"><strong>Required for the keyword-triggered DM feature.</strong> Syndicate polls recent Instagram posts for comments containing a creator-defined keyword (e.g., "link"). When a matching comment is found, the app sends the commenter a DM with the relevant shopping link. This permission is needed to read comments on the creator's own posts. Comments from other users are read only to detect the keyword — no comment data is stored or transmitted to any external server.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">instagram_manage_insights</div>
+        <div class="perm-desc"><strong>Required to display post analytics</strong> (views, reach, likes, impressions) in Syndicate's built-in analytics dashboard. Creators use this to track performance of their published content without leaving the app. Insights data is displayed locally and never uploaded to any server.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">pages_show_list</div>
+        <div class="perm-desc"><strong>Required to identify which Facebook Page is linked to the user's Instagram Business account.</strong> Syndicate uses this during initial setup to automatically detect the correct Page ID, so creators don't have to look it up manually.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">pages_manage_posts</div>
+        <div class="perm-desc"><strong>Required to publish video posts to the user's Facebook Page.</strong> When a creator includes Facebook in their publishing targets, Syndicate uses this permission to post the video and caption to the linked Facebook Page on their behalf.</div>
+      </div>
+    </div>
+
+    <div class="perm-card">
+      <div class="perm-dot"></div>
+      <div>
+        <div class="perm-name">pages_read_engagement</div>
+        <div class="perm-desc"><strong>Required to read engagement metrics on Facebook Page posts</strong> (likes, shares, reach). This data is surfaced in Syndicate's analytics dashboard alongside Instagram insights, giving creators a unified view of their content performance.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PRIVACY CALLOUT -->
+<section id="privacy">
+  <div class="privacy-callout">
+    <div class="privacy-icon">🔒</div>
+    <div>
+      <h3>Your data never leaves your device</h3>
+      <p>Syndicate stores all credentials, access tokens, and post data in a local <code>.env</code> file and SQLite database on your Mac. We operate no servers, collect no analytics, and have no access to your accounts or content. The app communicates only directly with the platforms you choose to publish to. <a href="privacy.html">Read the full Privacy Policy →</a></p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">SYNDICATE <span>◆</span></div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="https://github.com/alexluckhardt-crypto/syndicate-legal/issues">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

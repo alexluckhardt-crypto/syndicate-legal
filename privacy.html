@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Syndicate</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 760px; margin: 60px auto; padding: 0 24px; color: #1a1a2e; line-height: 1.7; }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    h2 { font-size: 1.15rem; margin-top: 36px; color: #3b0764; }
+    p, li { font-size: 0.97rem; color: #334155; }
+    ul { padding-left: 20px; }
+    .meta { color: #94a3b8; font-size: 0.87rem; margin-bottom: 40px; }
+    a { color: #7c3aed; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: March 29, 2026</p>
+
+  <p>Syndicate ("the App", "we", "us") is a desktop application that helps creators schedule and publish video content to social media platforms. This policy explains what data we handle and how.</p>
+
+  <h2>1. Data We Collect</h2>
+  <p>Syndicate does not collect, transmit, or store any personal data on external servers. All data — including API keys, access tokens, and scheduled post information — is stored locally on your device in:</p>
+  <ul>
+    <li>A local <code>.env</code> file (credentials)</li>
+    <li>A local SQLite database (your post queue)</li>
+  </ul>
+
+  <h2>2. Third-Party Services</h2>
+  <p>When you connect your accounts and post content, the App communicates directly with the following third-party platforms on your behalf:</p>
+  <ul>
+    <li><strong>Meta (Facebook &amp; Instagram)</strong> — via the Meta Graph API</li>
+    <li><strong>YouTube</strong> — via the YouTube Data API v3</li>
+    <li><strong>Pinterest</strong> — via the Pinterest API v5</li>
+    <li><strong>LTK (LikeToKnowIt)</strong> — via the LTK creator portal</li>
+    <li><strong>ManyChat</strong> — via the ManyChat API</li>
+    <li><strong>Anthropic</strong> — for AI caption generation via the Claude API</li>
+  </ul>
+  <p>Each of these services has its own privacy policy. We encourage you to review them. We only send data to these services as needed to carry out actions you explicitly request.</p>
+
+  <h2>3. OAuth Tokens</h2>
+  <p>When you authenticate with Facebook, YouTube, or Pinterest, the App receives an access token and/or refresh token. These tokens are stored only on your local device and are never transmitted to our servers.</p>
+
+  <h2>4. Uploaded Content</h2>
+  <p>Videos and captions you publish through the App are sent directly to the relevant social media platforms. We do not retain copies of your content.</p>
+
+  <h2>5. Children's Privacy</h2>
+  <p>Syndicate is not directed at children under 13. We do not knowingly collect data from children.</p>
+
+  <h2>6. Changes to This Policy</h2>
+  <p>We may update this policy from time to time. The "Last updated" date at the top will reflect any changes. Continued use of the App after changes constitutes acceptance.</p>
+
+  <h2>7. Contact</h2>
+  <p>If you have questions about this policy, please open an issue or reach out via GitHub.</p>
+</body>
+</html>
